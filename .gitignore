@@ -1,0 +1,22 @@
+# Some general dir's that shouldn't be commited
+.vscode
+.local
+.idea
+
+# parcels cache
+.cache
+
+# package dirs
+node_modules
+elm-stuff
+
+# build dirs
+dist
+build
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
