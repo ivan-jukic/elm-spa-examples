@@ -1,13 +1,56 @@
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
 html,
 body {
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
-    font-size: 12px;
-    font-family: Roboto, Helvetica, sans-serif;
+    font-family: "Open Sans", Helvetica, sans-serif;
 }
 
 .app {
-    padding: 10rem;
+    width: 60rem;
+    display: flex;
+    margin: 0 auto;
+    padding: 2rem 0;
+    flex-direction: column;
+}
+
+.nav-bar {
+    display: flex;
+    padding: 0.8rem 0;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #EEE;
+
+    .title {
+        font-size: 1.2rem;
+        font-weight: 700;
+    }
+
+    .links {
+        display: flex;
+        margin-left: auto;
+        font-size: 0.85rem;
+
+        > .link {
+            color: black;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.15rem;
+            text-decoration: none;
+
+            &.-active {
+                color: white;
+                background-color: #223843;
+            }
+
+            &.-ext {
+                color: #D77A61;
+            }
+        }
+    }
 }

@@ -1,11 +1,12 @@
-module Main exposing (..)
+module Main exposing (main)
 
 import Browser exposing (Document, UrlRequest(..))
-import Browser.Navigation exposing (Key)
-import Content exposing (Content(..))
-import Html exposing (div, text)
+import Browser.Navigation as Navigation exposing (Key)
+import Html exposing (Html, div, nav, section, text)
 import Html.Attributes exposing (class)
+import NavLink exposing (NavLink(..))
 import Url exposing (Url)
+import Url.Parser as Url
 
 
 main : Program () Model Msg
@@ -25,20 +26,41 @@ main =
 
 
 type Msg
-    = NoOp
-    | OnUrlRequest UrlRequest
+    = OnUrlRequest UrlRequest
     | OnUrlChange Url
 
 
 type alias Model =
-    { content : Content
+    { route : Route
     , navigationKey : Key
     }
 
 
+type Route
+    = Homepage
+    | Blog
+    | About
+    | Contact
+    | NotFound
+
+
+parseUrl : Url -> Route
+parseUrl url =
+    Maybe.withDefault NotFound <|
+        Url.parse
+            (Url.oneOf
+                [ Url.map Homepage Url.top
+                , Url.map Blog (Url.s "blog")
+                , Url.map About (Url.s "about")
+                , Url.map Contact (Url.s "contact")
+                ]
+            )
+            url
+
+
 init : flags -> Url -> Key -> ( Model, Cmd Msg )
-init _ url navigationKey =
-    ( { content = Homepage
+init _ initialUrl navigationKey =
+    ( { route = parseUrl initialUrl
       , navigationKey = navigationKey
       }
     , Cmd.none
@@ -48,16 +70,24 @@ init _ url navigationKey =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        NoOp ->
-            ( model, Cmd.none )
-
+        -- How do we handle on url change?
         OnUrlChange newUrl ->
-            -- How do we handle on url change?
-            ( model, Cmd.none )
+            ( { model | route = parseUrl newUrl }
+            , Cmd.none
+            )
 
+        -- How do we handle what happens when the user click a link?
         OnUrlRequest urlRequest ->
-            -- How do we handle what happens when the user click a link?
-            ( model, Cmd.none )
+            case urlRequest of
+                Internal internUrl ->
+                    ( model
+                    , internUrl
+                        |> Url.toString
+                        |> Navigation.pushUrl model.navigationKey
+                    )
+
+                External extUrl ->
+                    ( model, Navigation.load extUrl )
 
 
 view : Model -> Document Msg
@@ -66,7 +96,53 @@ view model =
     , body =
         [ div
             [ class "app" ]
-            [ text "Elm SPA example 1"
+            [ navBar model
+            , content model
             ]
         ]
     }
+
+
+navBar : Model -> Html Msg
+navBar model =
+    let
+        isActive : Route -> Bool
+        isActive r =
+            r == model.route
+
+        navLinks : List (Html Msg)
+        navLinks =
+            List.map NavLink.view
+                [ NavLink "Homepage" "/" (isActive Homepage)
+                , NavLink "Blog" "/blog" (isActive Blog)
+                , NavLink "About" "/about" (isActive About)
+                , NavLink "Contact" "/contact" (isActive Contact)
+                , ExternalLink "Google" "//google.co.uk"
+                ]
+    in
+    nav [ class "nav-bar" ]
+        [ div [ class "title" ] [ text "Example One" ]
+        , div [ class "links" ] navLinks
+        ]
+
+
+content : Model -> Html Msg
+content model =
+    section
+        [ class "page" ]
+        [ case model.route of
+            Homepage ->
+                text "This is homepage."
+
+            Blog ->
+                text "This is blog page."
+
+            About ->
+                text "This is about page."
+
+            Contact ->
+                text "This is contact page."
+
+            NotFound ->
+                text "I'm a bit lost :("
+        ]
