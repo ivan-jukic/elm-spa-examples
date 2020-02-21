@@ -3,13 +3,11 @@
 **Elm London Meetup 26/02/2020**
 
 This project contains a few examples on how URL routing could be implemented in
-an Elm SPA application. None of the examples in this project are **the solution**
-to implement routing in your Elm app, but more of guidelines on how this could
-be achieved.
+an Elm SPA application.
 
-Your app might have some specific behaviour that examples presented here might
-not be able to handle, but they might provide you with an *idea* on how to
-extend the functionality and achieve the desired result.
+None of the examples in this project are **the right solution**
+for implementing routing system in your Elm app, but more of guidelines that can
+be expanded upon, and modified to fit your needs.
 
 ## Getting started
 
@@ -38,3 +36,9 @@ yarn example1
 ```
 
 It will be available at [http://localhost:3001](http://localhost:3001).
+
+## Example 2
+
+## Example 3
+
+## CSS in the examples

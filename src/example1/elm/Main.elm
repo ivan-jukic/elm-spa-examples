@@ -20,7 +20,7 @@ main =
         -- When someone clicks a link, it always goes through onUrlRequest
         , onUrlRequest = OnUrlRequest
 
-        -- Whrn the url changes, it's handled through onUrlChange
+        -- When the url changes, it's handled through onUrlChange
         , onUrlChange = OnUrlChange
         }
 
@@ -37,7 +37,7 @@ type alias Model =
 
 
 type Route
-    = Homepage
+    = Home
     | Blog
     | About
     | Contact
@@ -49,7 +49,7 @@ parseUrl url =
     Maybe.withDefault NotFound <|
         Url.parse
             (Url.oneOf
-                [ Url.map Homepage Url.top
+                [ Url.map Home Url.top
                 , Url.map Blog (Url.s "blog")
                 , Url.map About (Url.s "about")
                 , Url.map Contact (Url.s "contact")
@@ -87,6 +87,8 @@ update msg model =
                     )
 
                 External extUrl ->
+                    -- User clicked on a link that will take him to an external
+                    -- site, we can do some
                     ( model, Navigation.load extUrl )
 
 
@@ -113,7 +115,7 @@ navBar model =
         navLinks : List (Html Msg)
         navLinks =
             List.map NavLink.view
-                [ NavLink "Homepage" "/" (isActive Homepage)
+                [ NavLink "Home" "/" (isActive Home)
                 , NavLink "Blog" "/blog" (isActive Blog)
                 , NavLink "About" "/about" (isActive About)
                 , NavLink "Contact" "/contact" (isActive Contact)
@@ -131,8 +133,8 @@ content model =
     section
         [ class "page" ]
         [ case model.route of
-            Homepage ->
-                text "This is homepage."
+            Home ->
+                text "This is home page."
 
             Blog ->
                 text "This is blog page."
