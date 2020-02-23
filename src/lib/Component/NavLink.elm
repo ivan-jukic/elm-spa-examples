@@ -1,4 +1,4 @@
-module NavLink exposing (NavLink(..), view)
+module Component.NavLink exposing (NavLink(..), view)
 
 import Html exposing (Html, a, text)
 import Html.Attributes exposing (class, classList, href)

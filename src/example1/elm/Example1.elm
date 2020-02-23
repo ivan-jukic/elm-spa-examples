@@ -1,12 +1,13 @@
-module Main exposing (main)
+module Example1 exposing (main)
 
 import Browser exposing (Document, UrlRequest(..))
 import Browser.Navigation as Navigation exposing (Key)
-import Html exposing (Html, div, nav, section, text)
+import Html exposing (Html, div, section, text)
 import Html.Attributes exposing (class)
-import NavLink exposing (NavLink(..))
+import Component.NavBar as NavBar
+import Component.NavLink exposing (NavLink(..))
 import Url exposing (Url)
-import Url.Parser as Url
+import Routes exposing (Route(..), parseUrl)
 
 
 main : Program () Model Msg
@@ -34,28 +35,6 @@ type alias Model =
     { route : Route
     , navigationKey : Key
     }
-
-
-type Route
-    = Home
-    | Blog
-    | About
-    | Contact
-    | NotFound
-
-
-parseUrl : Url -> Route
-parseUrl url =
-    Maybe.withDefault NotFound <|
-        Url.parse
-            (Url.oneOf
-                [ Url.map Home Url.top
-                , Url.map Blog (Url.s "blog")
-                , Url.map About (Url.s "about")
-                , Url.map Contact (Url.s "contact")
-                ]
-            )
-            url
 
 
 init : flags -> Url -> Key -> ( Model, Cmd Msg )
@@ -98,35 +77,11 @@ view model =
     , body =
         [ div
             [ class "app" ]
-            [ navBar model
+            [ NavBar.view "Example one" model.route
             , content model
             ]
         ]
     }
-
-
-navBar : Model -> Html Msg
-navBar model =
-    let
-        isActive : Route -> Bool
-        isActive r =
-            r == model.route
-
-        navLinks : List (Html Msg)
-        navLinks =
-            List.map NavLink.view
-                [ NavLink "Home" "/" (isActive Home)
-                , NavLink "Blog" "/blog" (isActive Blog)
-                , NavLink "About" "/about" (isActive About)
-                , NavLink "Contact" "/contact" (isActive Contact)
-                , ExternalLink "Google" "//google.co.uk"
-                ]
-    in
-    nav [ class "nav-bar" ]
-        [ div [ class "title" ] [ text "Example One" ]
-        , div [ class "links" ] navLinks
-        ]
-
 
 content : Model -> Html Msg
 content model =

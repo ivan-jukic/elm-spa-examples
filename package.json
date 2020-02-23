@@ -5,7 +5,10 @@
   "author": "Ivan Jukic",
   "license": "MIT",
   "scripts": {
-    "example1": "yarn parcel -p 3001 src/example1/index.pug"
+    "example1": "yarn clean && yarn parcel -p 3001 src/index.pug",
+    "example2": "yarn clean && EX_DIR=example2 yarn parcel -p 3002 src/index.pug",
+    "example3": "yarn clean && EX_DIR=example3 yarn parcel -p 3003 src/index.pug",
+    "clean": "rm -rf .cache && rm -rf dist"
   },
   "devDependencies": {
     "autoprefixer": "^9.7.4",

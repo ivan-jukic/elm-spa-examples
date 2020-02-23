@@ -1,8 +1,10 @@
 {
     "type": "application",
     "source-directories": [
-        "src/components",
-        "src/example1/elm"
+        "src/lib",
+        "src/example1/elm",
+        "src/example2/elm",
+        "src/example3/elm"
     ],
     "elm-version": "0.19.1",
     "dependencies": {
