@@ -38,9 +38,13 @@ type alias Model =
 
 init : flags -> Url -> Key -> ( Model, Cmd Msg )
 init _ initialUrl navigationKey =
-    ( { route = parseUrl initialUrl
+    let
+        initialRoute =
+            parseUrl initialUrl
+    in
+    ( { route = initialRoute
       , navigationKey = navigationKey
-      , content = Content.init
+      , content = setContent initialRoute Content.init
       }
     , Cmd.none
     )
@@ -62,7 +66,6 @@ update msg model =
             , Cmd.none
             )
 
-        -- How do we handle what happens when the user click a link?
         OnUrlRequest urlRequest ->
             case urlRequest of
                 Internal internUrl ->
@@ -73,8 +76,6 @@ update msg model =
                     )
 
                 External extUrl ->
-                    -- User clicked on a link that will take him to an external
-                    -- site, we can do some
                     ( model, Navigation.load extUrl )
         
         ContentMsg subMsg ->
