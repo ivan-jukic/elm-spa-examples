@@ -91,7 +91,8 @@ Available at [http://localhost:3003](http://localhost:3003)
 ## CSS in the examples
 
 If you've looked into the CSS code, you might have wondered why it's structured
-like that. Take a look at , and it might clear up a few things.
+like that. Take a look at [rscss.io](https://rscss.io/index.html),
+and it might clear up a few things.
 
 ## Contributions
 
